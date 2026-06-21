@@ -1,0 +1,26 @@
+[
+  {
+    "content": "Phase 2: Get design guidelines from design_agent",
+    "status": "in_progress"
+  },
+  {
+    "content": "Phase 2: Setup backend - models, seed data, API endpoints",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: Build frontend - all pages (Home, Characters, Gallery, Animations, About, Team, Contact)",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: Verify backend and frontend services running",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: All user stories covered in development",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 2: End to End Testing using testing_agent_v3",
+    "status": "pending"
+  }
+]
