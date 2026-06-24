@@ -132,7 +132,7 @@ export default function StorybookPage() {
                 GET NOTIFIED WHEN THE STORYBOOK LAUNCHES
               </h3>
               <p className="mt-3 text-foreground/65 text-sm sm:text-base">
-                Drop your email and we'll let you know the moment the first copy is available.
+                Drop your email and we&apos;ll let you know the moment the first copy is available.
               </p>
               <div className="mt-6">
                 <NewsletterForm />

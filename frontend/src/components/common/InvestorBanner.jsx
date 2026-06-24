@@ -25,7 +25,7 @@ export default function InvestorBanner({ compact = false, className }) {
             INTERESTED IN BRINGING THE KOTZINONS TO THE WORLD?
           </h3>
           <p className="mt-3 text-foreground/65 text-sm sm:text-base max-w-2xl">
-            We're open to partners interested in <span className="text-foreground/90">buying the real product line</span>,
+            We&apos;re open to partners interested in <span className="text-foreground/90">buying the real product line</span>,
             <span className="text-foreground/90"> licensing the IP</span>, or <span className="text-foreground/90">investing in distribution</span>.
           </p>
         </div>

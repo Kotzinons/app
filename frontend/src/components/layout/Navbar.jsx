@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,19 +6,104 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import { NAV_LINKS, LOGO_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-export default function Navbar() {
-  const [open, setOpen] = useState(false);
+function useScrollState(threshold = 12) {
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
+
+  const onScroll = useCallback(() => {
+    setScrolled(window.scrollY > threshold);
+  }, [threshold]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [onScroll]);
 
-  useEffect(() => { setOpen(false); }, [location.pathname]);
+  return scrolled;
+}
+
+function DesktopNav() {
+  return (
+    <nav className="hidden xl:flex items-center gap-0.5" data-testid="site-nav-desktop">
+      {NAV_LINKS.map((l) => (
+        <NavLink
+          key={l.to}
+          to={l.to}
+          data-testid={l.testid}
+          end={l.to === "/"}
+          className={({ isActive }) =>
+            cn(
+              "px-3 py-2 text-[13px] font-semibold rounded-md transition-colors duration-150 tracking-wide",
+              isActive
+                ? "text-[hsl(var(--kotz-gold))]"
+                : "text-foreground/70 hover:text-foreground"
+            )
+          }
+        >
+          {l.label}
+        </NavLink>
+      ))}
+    </nav>
+  );
+}
+
+function MobileNav({ open, setOpen }) {
+  return (
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="xl:hidden text-foreground hover:bg-foreground/5"
+          aria-label="Open menu"
+          data-testid="site-nav-mobile-trigger"
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </Button>
+      </SheetTrigger>
+      <SheetContent
+        side="right"
+        className="w-[300px] sm:w-[360px] bg-[hsl(var(--kotz-ink))] border-l border-border"
+        data-testid="site-nav-mobile"
+      >
+        <SheetTitle className="font-display text-2xl tracking-wider mb-2 text-foreground">THE KOTZINONS</SheetTitle>
+        <nav className="flex flex-col gap-1 mt-4">
+          {NAV_LINKS.map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              end={l.to === "/"}
+              data-testid={`${l.testid}-mobile`}
+              className={({ isActive }) =>
+                cn(
+                  "px-4 py-3 rounded-lg text-base font-semibold transition-colors duration-150",
+                  isActive
+                    ? "bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))]"
+                    : "text-foreground/80 hover:bg-foreground/5 hover:text-foreground"
+                )
+              }
+            >
+              {l.label}
+            </NavLink>
+          ))}
+          <Button asChild className="mt-4 rounded-full bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold" data-testid="nav-cta-invest-mobile">
+            <Link to="/invest">Licensing & Invest</Link>
+          </Button>
+        </nav>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const scrolled = useScrollState(12);
+  const location = useLocation();
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
 
   return (
     <header
@@ -40,27 +125,7 @@ export default function Navbar() {
           <span className="hidden sm:block font-display text-xl tracking-wider text-foreground">THE KOTZINONS</span>
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden xl:flex items-center gap-0.5" data-testid="site-nav-desktop">
-          {NAV_LINKS.map((l) => (
-            <NavLink
-              key={l.to}
-              to={l.to}
-              data-testid={l.testid}
-              end={l.to === "/"}
-              className={({ isActive }) =>
-                cn(
-                  "px-3 py-2 text-[13px] font-semibold rounded-md transition-colors duration-150 tracking-wide",
-                  isActive
-                    ? "text-[hsl(var(--kotz-gold))]"
-                    : "text-foreground/70 hover:text-foreground"
-                )
-              }
-            >
-              {l.label}
-            </NavLink>
-          ))}
-        </nav>
+        <DesktopNav />
 
         <div className="flex items-center gap-2">
           <Button
@@ -72,50 +137,7 @@ export default function Navbar() {
             <Link to="/invest">Licensing & Invest <ArrowRight className="h-3.5 w-3.5 ml-1" /></Link>
           </Button>
 
-          {/* Mobile nav */}
-          <Sheet open={open} onOpenChange={setOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="xl:hidden text-foreground hover:bg-foreground/5"
-                aria-label="Open menu"
-                data-testid="site-nav-mobile-trigger"
-              >
-                {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
-            </SheetTrigger>
-            <SheetContent
-              side="right"
-              className="w-[300px] sm:w-[360px] bg-[hsl(var(--kotz-ink))] border-l border-border"
-              data-testid="site-nav-mobile"
-            >
-              <SheetTitle className="font-display text-2xl tracking-wider mb-2 text-foreground">THE KOTZINONS</SheetTitle>
-              <nav className="flex flex-col gap-1 mt-4">
-                {NAV_LINKS.map((l) => (
-                  <NavLink
-                    key={l.to}
-                    to={l.to}
-                    end={l.to === "/"}
-                    data-testid={`${l.testid}-mobile`}
-                    className={({ isActive }) =>
-                      cn(
-                        "px-4 py-3 rounded-lg text-base font-semibold transition-colors duration-150",
-                        isActive
-                          ? "bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))]"
-                          : "text-foreground/80 hover:bg-foreground/5 hover:text-foreground"
-                      )
-                    }
-                  >
-                    {l.label}
-                  </NavLink>
-                ))}
-                <Button asChild className="mt-4 rounded-full bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold" data-testid="nav-cta-invest-mobile">
-                  <Link to="/invest">Licensing & Invest</Link>
-                </Button>
-              </nav>
-            </SheetContent>
-          </Sheet>
+          <MobileNav open={open} setOpen={setOpen} />
         </div>
       </div>
       {/* Subtle comet stripe at bottom of header */}

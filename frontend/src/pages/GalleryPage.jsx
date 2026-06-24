@@ -8,6 +8,11 @@ import SectionHeading from "@/components/common/SectionHeading";
 import MasonryGallery from "@/components/common/MasonryGallery";
 import OrbitBackground from "@/components/common/OrbitBackground";
 
+const SKELETON_ROWS = Array.from({ length: 6 }).map((_, i) => ({
+  id: `gallery-skel-${i}`,
+  height: 180 + (i % 3) * 80,
+}));
+
 export default function GalleryPage() {
   const [category, setCategory] = useState("all");
   const { data: items = [], isLoading } = useQuery({
@@ -47,11 +52,11 @@ export default function GalleryPage() {
             <TabsContent value={category} className="mt-0">
               {isLoading ? (
                 <div className="columns-1 sm:columns-2 lg:columns-3 gap-5">
-                  {Array.from({ length: 6 }).map((_, i) => (
+                  {SKELETON_ROWS.map((row) => (
                     <Skeleton
-                      key={i}
+                      key={row.id}
                       className="mb-5 inline-block w-full rounded-2xl bg-[hsl(var(--kotz-ink-2))]"
-                      style={{ height: `${180 + (i % 3) * 80}px` }}
+                      style={{ height: `${row.height}px` }}
                     />
                   ))}
                 </div>

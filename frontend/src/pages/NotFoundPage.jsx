@@ -16,7 +16,7 @@ export default function NotFoundPage() {
           PAGE NOT FOUND
         </h1>
         <p className="mt-4 text-foreground/65 max-w-xl mx-auto">
-          The Kotzinons looked everywhere — even with cosmic sight. This page doesn't exist on our map.
+          The Kotzinons looked everywhere — even with cosmic sight. This page doesn&apos;t exist on our map.
         </p>
         <Button asChild size="lg" className="mt-6 rounded-xl bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold" data-testid="not-found-home-cta">
           <Link to="/">Take me home</Link>

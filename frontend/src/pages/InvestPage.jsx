@@ -226,7 +226,7 @@ export default function InvestPage() {
             <div className="absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-[radial-gradient(circle,hsla(213,92%,56%,0.2),transparent_60%)]" />
             <div className="relative">
               <div className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.3em] text-[hsl(var(--kotz-gold))]">
-                <Sparkles className="h-3.5 w-3.5" /> Let's build the next great hero universe
+                <Sparkles className="h-3.5 w-3.5" /> Let&apos;s build the next great hero universe
               </div>
               <h3 className="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl tracking-wider text-foreground leading-[0.95]">
                 ONE EMAIL AWAY.

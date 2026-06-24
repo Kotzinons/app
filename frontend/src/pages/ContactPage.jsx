@@ -34,10 +34,13 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setForm((f) => ({ ...f, inquiry_type: searchParams.get("inquiry") || f.inquiry_type }));
+    const inquiry = searchParams.get("inquiry");
+    if (inquiry) {
+      setForm((prev) => ({ ...prev, inquiry_type: inquiry }));
+    }
   }, [searchParams]);
 
-  const update = (key, val) => setForm((f) => ({ ...f, [key]: val }));
+  const update = (key, val) => setForm((prev) => ({ ...prev, [key]: val }));
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -179,7 +182,7 @@ export default function ContactPage() {
                       </span>
                       <span>
                         <span className="block font-semibold">Meet the team</span>
-                        <span className="block text-foreground/55 text-xs">See who's behind the project</span>
+                        <span className="block text-foreground/55 text-xs">See who&apos;s behind the project</span>
                       </span>
                     </Link>
                   </li>

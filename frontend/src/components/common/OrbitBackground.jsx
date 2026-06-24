@@ -1,7 +1,21 @@
 import { cn } from "@/lib/utils";
 
+function getOpacity(intensity) {
+  if (intensity === "high") return 0.28;
+  if (intensity === "low") return 0.12;
+  return 0.2;
+}
+
+// Pre-computed stable star positions (deterministic seed)
+const STARS = Array.from({ length: 60 }).map((_, i) => ({
+  id: `star-${i}`,
+  x: ((i * 173) % 1200) + ((i * 13) % 30),
+  y: ((i * 113) % 800) + ((i * 7) % 25),
+  r: (i % 3) + 0.6,
+}));
+
 export default function OrbitBackground({ className, intensity = "medium" }) {
-  const op = intensity === "high" ? 0.28 : intensity === "low" ? 0.12 : 0.2;
+  const op = getOpacity(intensity);
   return (
     <div
       aria-hidden="true"
@@ -16,12 +30,9 @@ export default function OrbitBackground({ className, intensity = "medium" }) {
             <stop offset="100%" stopColor="#FFE08A" stopOpacity="0" />
           </radialGradient>
         </defs>
-        {Array.from({ length: 60 }).map((_, i) => {
-          const x = ((i * 173) % 1200) + ((i * 13) % 30);
-          const y = ((i * 113) % 800) + ((i * 7) % 25);
-          const r = (i % 3) + 0.6;
-          return <circle key={i} cx={x} cy={y} r={r} fill="url(#star-grad)" opacity={0.6} />;
-        })}
+        {STARS.map((s) => (
+          <circle key={s.id} cx={s.x} cy={s.y} r={s.r} fill="url(#star-grad)" opacity={0.6} />
+        ))}
       </svg>
 
       {/* Color washes */}

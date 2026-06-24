@@ -19,14 +19,37 @@ const FILTERS = [
   { value: "green", label: "Green", color: "green" },
 ];
 
+function FilterButton({ filter, active, onClick }) {
+  const c = filter.color ? COLOR_MAP[filter.color] : null;
+  return (
+    <Button
+      size="sm"
+      className={cn(
+        "rounded-full px-4 transition-colors duration-150",
+        active
+          ? "bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold"
+          : "bg-transparent border border-border text-foreground/75 hover:bg-foreground/5"
+      )}
+      onClick={onClick}
+      data-testid={`character-filter-${filter.value}`}
+    >
+      {c && <span className={cn("inline-block h-2 w-2 rounded-full mr-2", c.bg)} />}
+      {filter.label}
+    </Button>
+  );
+}
+
 export default function CharactersPage() {
   const [active, setActive] = useState(null);
   const [filter, setFilter] = useState("all");
-  const { data: characters = [], isLoading } = useQuery({ queryKey: ["characters"], queryFn: fetchCharacters });
+  const { data: characters = [], isLoading } = useQuery({
+    queryKey: ["characters"],
+    queryFn: fetchCharacters,
+  });
 
   const filtered = useMemo(() => {
     if (filter === "all") return characters;
-    return characters.filter((c) => c.color === filter);
+    return characters.filter((char) => char.color === filter);
   }, [characters, filter]);
 
   return (
@@ -41,29 +64,14 @@ export default function CharactersPage() {
           />
 
           <div className="mt-8 flex flex-wrap items-center gap-2" data-testid="character-filters">
-            {FILTERS.map((f) => {
-              const c = f.color ? COLOR_MAP[f.color] : null;
-              const isActive = filter === f.value;
-              return (
-                <Button
-                  key={f.value}
-                  size="sm"
-                  className={cn(
-                    "rounded-full px-4 transition-colors duration-150",
-                    isActive
-                      ? "bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold"
-                      : "bg-transparent border border-border text-foreground/75 hover:bg-foreground/5"
-                  )}
-                  onClick={() => setFilter(f.value)}
-                  data-testid={`character-filter-${f.value}`}
-                >
-                  {c && (
-                    <span className={cn("inline-block h-2 w-2 rounded-full mr-2", c.bg)} />
-                  )}
-                  {f.label}
-                </Button>
-              );
-            })}
+            {FILTERS.map((f) => (
+              <FilterButton
+                key={f.value}
+                filter={f}
+                active={filter === f.value}
+                onClick={() => setFilter(f.value)}
+              />
+            ))}
             <Badge variant="outline" className="ml-2 font-mono border-border text-foreground/65">
               {filtered.length} shown
             </Badge>

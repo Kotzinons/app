@@ -1,8 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight, Handshake, Mail } from "lucide-react";
 import { fetchTeam } from "@/lib/api";
 import TeamMemberCard from "@/components/common/TeamMemberCard";
 import SectionHeading from "@/components/common/SectionHeading";
@@ -10,7 +7,27 @@ import OrbitBackground from "@/components/common/OrbitBackground";
 import CTABand from "@/components/common/CTABand";
 import InvestorBanner from "@/components/common/InvestorBanner";
 import { Skeleton } from "@/components/ui/skeleton";
-import { INVESTOR_EMAIL } from "@/lib/constants";
+
+const TEAM_SKELETONS = Array.from({ length: 4 }).map((_, i) => `team-skel-${i}`);
+
+function TeamGrid({ team, isLoading }) {
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {TEAM_SKELETONS.map((id) => (
+          <Skeleton key={id} className="h-64 rounded-2xl bg-[hsl(var(--kotz-ink-2))]" />
+        ))}
+      </div>
+    );
+  }
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {team.map((m, i) => (
+        <TeamMemberCard key={m.id} member={m} index={i} />
+      ))}
+    </div>
+  );
+}
 
 export default function TeamPage() {
   const { data: team = [], isLoading } = useQuery({ queryKey: ["team"], queryFn: fetchTeam });
@@ -30,19 +47,7 @@ export default function TeamPage() {
 
       <section className="pb-16 bg-[hsl(var(--kotz-ink))]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-64 rounded-2xl bg-[hsl(var(--kotz-ink-2))]" />
-              ))}
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {team.map((m, i) => (
-                <TeamMemberCard key={m.id} member={m} index={i} />
-              ))}
-            </div>
-          )}
+          <TeamGrid team={team} isLoading={isLoading} />
         </div>
       </section>
 

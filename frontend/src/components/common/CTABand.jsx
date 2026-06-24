@@ -20,7 +20,7 @@ export default function CTABand() {
                 <Sparkles className="h-3.5 w-3.5" /> Join the universe
               </p>
               <h3 className="mt-3 font-display text-4xl sm:text-5xl lg:text-6xl tracking-wider leading-[0.95] text-foreground">
-                BE THE FIRST TO SEE WHAT'S NEXT
+                BE THE FIRST TO SEE WHAT&apos;S NEXT
               </h3>
               <p className="mt-4 text-foreground/65 text-base sm:text-lg max-w-xl">
                 Animations, characters, the upcoming storybook, and behind-the-scenes drops —
