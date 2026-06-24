@@ -11,29 +11,28 @@ export default function CharacterDossierDialog({ character, open, onOpenChange }
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="max-w-4xl p-0 overflow-hidden bg-card"
+        className="max-w-4xl p-0 overflow-hidden bg-[hsl(var(--kotz-ink-2))] border-border"
         data-testid="character-dossier-dialog"
       >
         <DialogTitle className="sr-only">{character.name} dossier</DialogTitle>
         <DialogDescription className="sr-only">{character.tagline}</DialogDescription>
         <div className="grid md:grid-cols-2">
           {/* Image */}
-          <div className="relative bg-[hsl(var(--kotz-ink))] aspect-[3/4] md:aspect-auto">
-            <div className="absolute inset-0 opacity-25 bg-halftone text-white" />
+          <div className="relative bg-black aspect-[3/4] md:aspect-auto">
             <img
               src={character.image_url}
               alt={`${character.name} dossier image`}
               className="absolute inset-0 w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
             <div className="absolute bottom-4 left-4 right-4 text-white">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
                 <span className={cn("inline-block h-3 w-3 rounded-full", c.bg)} />
-                <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-white/80">
+                <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/70">
                   {c.label}
                 </span>
                 {character.is_leader && (
-                  <Badge className={cn("ml-1 gap-1 border", c.bgSoft, c.text, c.border)}>
+                  <Badge className="gap-1 bg-[hsl(var(--kotz-gold))]/15 text-[hsl(var(--kotz-gold))] border-[hsl(var(--kotz-gold))]/40 border">
                     <Crown className="h-3 w-3" /> Leader
                   </Badge>
                 )}
@@ -41,31 +40,31 @@ export default function CharacterDossierDialog({ character, open, onOpenChange }
               <h2 className="font-display text-5xl tracking-wider leading-none">
                 {character.name.toUpperCase()}
               </h2>
-              <p className="mt-1 text-sm text-white/85">{character.role}</p>
+              <p className="mt-1 text-sm text-white/80">{character.role}</p>
             </div>
           </div>
 
           {/* Details */}
-          <div className="p-6 sm:p-8 max-h-[80vh] overflow-y-auto">
-            <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
-              Dossier
+          <div className="p-6 sm:p-8 max-h-[80vh] overflow-y-auto scrollbar-thin">
+            <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-[hsl(var(--kotz-gold))]">
+              Hero Dossier
             </p>
-            <p className="mt-2 text-lg italic text-foreground/90 text-balance">
+            <p className="mt-2 font-serif italic text-xl text-foreground/90 text-balance leading-snug">
               “{character.tagline}”
             </p>
-            <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-4 text-sm leading-relaxed text-foreground/70">
               {character.description}
             </p>
 
-            <div className="mt-6 grid grid-cols-1 gap-4">
-              <div className="rounded-xl border p-4 bg-secondary/50">
-                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted-foreground">
+            <div className="mt-6 grid grid-cols-1 gap-3">
+              <div className="rounded-xl border border-border p-4 bg-[hsl(var(--kotz-ink))]">
+                <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-foreground/55">
                   <Swords className="h-3.5 w-3.5" /> Signature Weapon
                 </div>
-                <p className="mt-1 text-base font-semibold">{character.weapon}</p>
+                <p className="mt-1 text-base font-semibold text-foreground">{character.weapon}</p>
               </div>
-              <div className="rounded-xl border p-4">
-                <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-muted-foreground">
+              <div className="rounded-xl border border-border p-4 bg-[hsl(var(--kotz-ink))]">
+                <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-foreground/55">
                   <Shield className="h-3.5 w-3.5" /> Abilities
                 </div>
                 <div className="mt-2 flex flex-wrap gap-2">
@@ -73,7 +72,7 @@ export default function CharacterDossierDialog({ character, open, onOpenChange }
                     <Badge
                       key={a}
                       variant="outline"
-                      className={cn("gap-1 font-mono text-[11px]", c.text, c.border)}
+                      className={cn("gap-1 font-mono text-[11px] bg-transparent", c.text, c.border)}
                     >
                       <Sparkles className="h-3 w-3" /> {a}
                     </Badge>

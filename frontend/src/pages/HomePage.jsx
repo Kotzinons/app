@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Play, Sparkles, Shield, Crown } from "lucide-react";
+import { ArrowRight, Play, Sparkles, Shield, BookOpen, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { fetchCharacters, fetchVideos, fetchTeam } from "@/lib/api";
-import { LOGO_URL, COLOR_MAP } from "@/lib/constants";
+import { LOGO_URL, SPACESHIP_HERO_URL, COLOR_MAP, INVESTOR_EMAIL } from "@/lib/constants";
 import OrbitBackground from "@/components/common/OrbitBackground";
 import CharacterCard from "@/components/common/CharacterCard";
 import CharacterDossierDialog from "@/components/common/CharacterDossierDialog";
@@ -16,6 +16,8 @@ import SectionHeading from "@/components/common/SectionHeading";
 import LoadingGrid from "@/components/common/LoadingGrid";
 import CTABand from "@/components/common/CTABand";
 import TeamMemberCard from "@/components/common/TeamMemberCard";
+import StorybookCover from "@/components/common/StorybookCover";
+import InvestorBanner from "@/components/common/InvestorBanner";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
@@ -29,65 +31,89 @@ export default function HomePage() {
   const { data: team = [] } = useQuery({ queryKey: ["team"], queryFn: fetchTeam });
 
   const featuredVideo = videos.find((v) => v.featured) || videos[0];
-  const leader = characters.find((c) => c.is_leader);
-  const heroImage = leader?.image_url;
 
   return (
     <div data-testid="home-page">
-      {/* HERO */}
-      <section className="relative overflow-hidden bg-background">
-        <OrbitBackground />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 lg:pt-20 pb-16 lg:pb-24">
+      {/* ============= CINEMATIC HERO ============= */}
+      <section className="relative overflow-hidden bg-[hsl(var(--kotz-ink))] min-h-[88vh] flex items-center">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <img
+            src={SPACESHIP_HERO_URL}
+            alt=""
+            aria-hidden="true"
+            className="w-full h-full object-cover object-center opacity-50"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-[hsl(var(--kotz-ink))]/70 via-[hsl(var(--kotz-ink))]/60 to-[hsl(var(--kotz-ink))]" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--kotz-ink))] via-[hsl(var(--kotz-ink))]/60 to-transparent" />
+          <div className="absolute inset-0 spotlight" />
+          <div className="absolute inset-0 bg-noise" />
+        </div>
+
+        <OrbitBackground intensity="high" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28 w-full">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-7">
+            <div className="lg:col-span-8">
               <motion.div
-                initial={{ opacity: 0, y: 12 }}
+                initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="inline-flex items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-[11px] font-mono uppercase tracking-[0.2em] text-muted-foreground"
+                className="inline-flex items-center gap-2 rounded-full border border-[hsl(var(--kotz-gold))]/30 bg-[hsl(var(--kotz-ink-2))]/60 backdrop-blur-md px-4 py-1.5 text-[10px] font-mono uppercase tracking-[0.3em] text-[hsl(var(--kotz-gold))]"
                 data-testid="hero-eyebrow"
               >
-                <span className="inline-block h-2 w-2 rounded-full bg-[hsl(var(--kotz-gold))] animate-pulse" />
-                Now in production — The Kotzinons animation
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-[hsl(var(--kotz-gold))] animate-pulse" />
+                A new universe in production
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.08 }}
+                className="mt-5 flex items-center gap-4"
+              >
+                <img src={LOGO_URL} alt="The Kotzinons" className="h-16 w-16 sm:h-20 sm:w-20 object-contain drop-shadow-2xl" />
+                <div className="hidden sm:block h-12 w-px bg-foreground/20" />
+                <p className="hidden sm:block text-[11px] font-mono uppercase tracking-[0.3em] text-foreground/55">
+                  An Original IP<br />by Uri Menashe Eini
+                </p>
               </motion.div>
 
               <motion.h1
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.05 }}
-                className="mt-5 font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl tracking-wider leading-[0.9]"
+                transition={{ duration: 0.7, delay: 0.12 }}
+                className="mt-6 font-display text-6xl sm:text-7xl lg:text-8xl xl:text-9xl tracking-wider leading-[0.88] text-foreground"
                 data-testid="hero-title"
               >
-                THE <span className="text-[hsl(var(--kotz-red))]">KOTZ</span>
-                <span className="text-[hsl(var(--kotz-gold))]">IN</span>
-                <span className="text-[hsl(var(--kotz-blue))]">O</span>
-                <span className="text-[hsl(var(--kotz-green))]">N</span>
-                <span className="text-[hsl(var(--kotz-red))]">S</span>
+                THE <span className="gold-text">KOTZINONS</span>
                 <br />
-                <span className="text-foreground">DEFENDERS OF THE UNIVERSE.</span>
+                <span className="font-serif italic font-medium text-3xl sm:text-4xl lg:text-5xl xl:text-6xl text-foreground/80 normal-case tracking-normal">
+                  Defenders of the Universe.
+                </span>
               </motion.h1>
 
               <motion.p
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="mt-5 text-base sm:text-lg text-muted-foreground max-w-2xl text-balance"
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="mt-6 text-base sm:text-lg text-foreground/70 max-w-2xl text-balance leading-relaxed"
                 data-testid="hero-subtitle"
               >
                 Born from one creator's drawing pad, hand-built into a toy, and now leaping onto screens.
-                Meet the spiked-armor heroes protecting the galaxy — created and copyrighted by Uri Eini.
+                Meet the spiked-armor heroes protecting the galaxy — a brand new animation studio universe.
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.15 }}
-                className="mt-7 flex flex-wrap items-center gap-3"
+                transition={{ duration: 0.5, delay: 0.28 }}
+                className="mt-8 flex flex-wrap items-center gap-3"
               >
                 <Button
                   asChild
                   size="lg"
-                  className="rounded-xl px-5 h-12 gap-2"
+                  className="rounded-xl px-6 h-12 gap-2 bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold shadow-[0_20px_40px_-15px_rgba(245,192,51,0.5)]"
                   data-testid="hero-primary-cta"
                 >
                   <Link to="/characters">
@@ -96,13 +122,24 @@ export default function HomePage() {
                 </Button>
                 <Button
                   asChild
-                  variant="secondary"
+                  variant="outline"
                   size="lg"
-                  className="rounded-xl px-5 h-12 gap-2"
+                  className="rounded-xl px-6 h-12 gap-2 border-border bg-transparent backdrop-blur text-foreground hover:bg-foreground/5"
                   data-testid="hero-secondary-cta"
                 >
                   <Link to="/animations">
                     <Play className="h-4 w-4" /> Watch the Short
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="lg"
+                  className="rounded-xl px-4 h-12 gap-2 text-foreground/70 hover:text-foreground hover:bg-foreground/5"
+                  data-testid="hero-invest-cta"
+                >
+                  <Link to="/invest">
+                    Licensing & Invest →
                   </Link>
                 </Button>
               </motion.div>
@@ -110,74 +147,48 @@ export default function HomePage() {
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.25 }}
-                className="mt-8 grid grid-cols-3 gap-3 max-w-md"
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="mt-10 flex items-center gap-8 text-xs font-mono uppercase tracking-[0.2em] text-foreground/45"
               >
-                <Stat label="Heroes" value="5" icon={Shield} accent="red" />
-                <Stat label="Color Codes" value="4" icon={Sparkles} accent="blue" />
-                <Stat label="Leader" value="1" icon={Crown} accent="gold" />
+                <span className="flex items-center gap-2">
+                  <Shield className="h-3.5 w-3.5 text-[hsl(var(--kotz-gold))]" /> 5 Heroes
+                </span>
+                <span className="flex items-center gap-2">
+                  <BookOpen className="h-3.5 w-3.5 text-[hsl(var(--kotz-gold))]" /> Storybook soon
+                </span>
+                <span className="flex items-center gap-2">
+                  <Play className="h-3.5 w-3.5 text-[hsl(var(--kotz-gold))]" /> Animation
+                </span>
               </motion.div>
             </div>
 
-            <div className="lg:col-span-5">
+            {/* Floating storybook teaser */}
+            <div className="lg:col-span-4 hidden lg:flex items-center justify-center">
               <motion.div
-                initial={{ opacity: 0, scale: 0.96 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="relative"
+                initial={{ opacity: 0, rotate: -8, y: 30 }}
+                animate={{ opacity: 1, rotate: -5, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
               >
-                <div className="relative rounded-3xl border bg-[hsl(var(--kotz-ink))] overflow-hidden aspect-[4/5] shadow-2xl">
-                  <div className="absolute inset-0 bg-halftone text-white opacity-25" />
-                  {heroImage ? (
-                    <img
-                      src={heroImage}
-                      alt="Goldon — Supreme Commander of the Kotzinons"
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-white/40">
-                      Loading hero...
-                    </div>
-                  )}
-                  <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/70">
-                      Featured Hero
-                    </p>
-                    <h3 className="font-display text-3xl tracking-wider">GOLDON</h3>
-                    <p className="text-xs text-white/80">Supreme Commander • Crystal Cell Cannon</p>
-                  </div>
-                  {/* Logo watermark */}
-                  <img
-                    src={LOGO_URL}
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute top-3 right-3 h-12 w-12 object-contain drop-shadow-2xl"
-                  />
-                </div>
-                {/* Color chip stack */}
-                <div className="absolute -bottom-3 -left-3 flex gap-1.5">
-                  <span className="h-6 w-6 rounded-md bg-[hsl(var(--kotz-red))] border-2 border-background" />
-                  <span className="h-6 w-6 rounded-md bg-[hsl(var(--kotz-blue))] border-2 border-background" />
-                  <span className="h-6 w-6 rounded-md bg-[hsl(var(--kotz-gold))] border-2 border-background" />
-                  <span className="h-6 w-6 rounded-md bg-[hsl(var(--kotz-green))] border-2 border-background" />
-                </div>
+                <StorybookCover size="md" />
               </motion.div>
             </div>
           </div>
         </div>
+
+        {/* Comet stripe at the bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-px comet-stripe opacity-60" />
       </section>
 
-      {/* FEATURED CHARACTERS */}
-      <section className="relative py-14 sm:py-20 bg-secondary/40" data-testid="home-characters-section">
+      {/* ============= FEATURED CHARACTERS ============= */}
+      <section className="relative py-20 bg-[hsl(var(--kotz-ink))]" data-testid="home-characters-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
             <SectionHeading
               eyebrow="The Lineup"
               title="FIVE HEROES. ONE MISSION."
-              subtitle="Each Kotzinon wields a signature color and weapon. Tap any card to open the dossier."
+              subtitle="Each Kotzinon wields a signature color and weapon. Tap any card to open the full dossier."
             />
-            <Button asChild variant="outline" size="lg" className="rounded-xl gap-2 self-start">
+            <Button asChild variant="outline" size="lg" className="rounded-xl gap-2 self-start border-border bg-transparent text-foreground hover:bg-foreground/5">
               <Link to="/characters" data-testid="home-view-all-characters">
                 View all characters <ArrowRight className="h-4 w-4" />
               </Link>
@@ -189,34 +200,25 @@ export default function HomePage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5">
               {characters.map((c, i) => (
-                <CharacterCard
-                  key={c.id}
-                  character={c}
-                  index={i}
-                  onClick={(ch) => setActiveCharacter(ch)}
-                />
+                <CharacterCard key={c.id} character={c} index={i} onClick={(ch) => setActiveCharacter(ch)} />
               ))}
             </div>
           )}
         </div>
       </section>
 
-      {/* FEATURED ANIMATION */}
-      <section className="py-14 sm:py-20" data-testid="home-animation-section">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ============= FEATURED ANIMATION ============= */}
+      <section className="relative py-20 bg-[hsl(var(--kotz-ink-2))]/40" data-testid="home-animation-section">
+        <div className="absolute inset-0 bg-grain opacity-30" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-5">
               <SectionHeading
                 eyebrow="Featured Animation"
                 title="THE HEROES, IN MOTION."
-                subtitle="Our animation team brings every spike, dome, and battle cry to life. Watch the first official Kotzinons short."
+                subtitle="Our animation team brings every spike, dome, and battle pose to life. Watch the first official Kotzinons short."
               />
-              <Button
-                asChild
-                size="lg"
-                className="mt-6 rounded-xl gap-2"
-                data-testid="home-animation-cta"
-              >
+              <Button asChild size="lg" className="mt-6 rounded-xl gap-2 bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold" data-testid="home-animation-cta">
                 <Link to="/animations">
                   More animations <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -231,37 +233,63 @@ export default function HomePage() {
                   className="max-w-md mx-auto lg:mx-0"
                 />
               ) : (
-                <div className="rounded-2xl border bg-card aspect-video animate-pulse" />
+                <div className="rounded-2xl border border-border bg-[hsl(var(--kotz-ink))] aspect-video animate-pulse" />
               )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* JOURNEY TIMELINE */}
-      <section className="py-14 sm:py-20 bg-secondary/40">
+      {/* ============= STORYBOOK TEASER ============= */}
+      <section className="relative py-20 bg-[hsl(var(--kotz-ink))]" data-testid="home-storybook-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-10 items-center">
+            <div className="lg:col-span-5 order-2 lg:order-1">
+              <SectionHeading
+                eyebrow="Coming Soon"
+                title="THE STORYBOOK—ORIGINS."
+                subtitle="How did the Kotzinons come to be? The official illustrated origin story is in production. Every spike, every cosmic battle, every secret of the Crystal Cell—told in full color."
+              />
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Button asChild size="lg" className="rounded-xl gap-2 bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold">
+                  <Link to="/storybook" data-testid="home-storybook-cta">
+                    Preview the Storybook <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+            <div className="lg:col-span-7 order-1 lg:order-2 flex justify-center">
+              <StorybookCover size="lg" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============= JOURNEY TIMELINE ============= */}
+      <section className="relative py-20 bg-[hsl(var(--kotz-ink-2))]/40">
+        <div className="absolute inset-0 bg-grain opacity-30" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionHeading
             eyebrow="The Journey"
             title="FROM A PEN ON PAPER TO THE BIG SCREEN."
             subtitle="Every Kotzinon went through four lives — a drawing, a handmade toy, a 3D render, and now full animation."
             align="center"
-            className="mb-10 mx-auto"
+            className="mb-12 mx-auto"
           />
           <JourneyTimeline />
         </div>
       </section>
 
-      {/* TEAM PREVIEW */}
-      <section className="py-14 sm:py-20" data-testid="home-team-section">
+      {/* ============= TEAM PREVIEW ============= */}
+      <section className="py-20 bg-[hsl(var(--kotz-ink))]" data-testid="home-team-section">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-10">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
             <SectionHeading
               eyebrow="The Crew"
               title="THE PEOPLE BEHIND THE HEROES."
-              subtitle="A small, focused team of creators, engineers, animators, and operators bringing Kotzinons to life."
+              subtitle="A small, focused team of creators, engineers, animators, and operators bringing the Kotzinons to life."
             />
-            <Button asChild variant="outline" size="lg" className="rounded-xl gap-2 self-start">
+            <Button asChild variant="outline" size="lg" className="rounded-xl gap-2 self-start border-border bg-transparent text-foreground hover:bg-foreground/5">
               <Link to="/team" data-testid="home-view-all-team">
                 Meet everyone <ArrowRight className="h-4 w-4" />
               </Link>
@@ -275,8 +303,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA BAND */}
-      <section className="pb-20">
+      {/* ============= INVESTOR BANNER ============= */}
+      <section className="py-12 bg-[hsl(var(--kotz-ink))]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <InvestorBanner />
+        </div>
+      </section>
+
+      {/* ============= CTA BAND ============= */}
+      <section className="pb-24 bg-[hsl(var(--kotz-ink))]">
         <CTABand />
       </section>
 
@@ -285,21 +320,6 @@ export default function HomePage() {
         open={!!activeCharacter}
         onOpenChange={(o) => !o && setActiveCharacter(null)}
       />
-    </div>
-  );
-}
-
-function Stat({ label, value, icon: Icon, accent }) {
-  const c = COLOR_MAP[accent] || COLOR_MAP.gold;
-  return (
-    <div className={cn("rounded-xl border bg-card p-3", c.border)}>
-      <div className="flex items-center gap-2">
-        <Icon className={cn("h-4 w-4", c.text)} />
-        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
-          {label}
-        </span>
-      </div>
-      <p className="mt-1 font-display text-3xl tracking-wider">{value}</p>
     </div>
   );
 }

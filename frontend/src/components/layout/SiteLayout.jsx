@@ -11,7 +11,7 @@ export default function SiteLayout() {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-background" data-testid="site-layout">
+    <div className="min-h-screen flex flex-col bg-background text-foreground" data-testid="site-layout">
       <Navbar />
       <main className="flex-1">
         <Outlet />

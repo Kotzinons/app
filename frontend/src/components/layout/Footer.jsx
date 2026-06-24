@@ -1,37 +1,44 @@
 import { Link } from "react-router-dom";
-import { Mail, Youtube, Instagram, Twitter } from "lucide-react";
-import { LOGO_URL, NAV_LINKS } from "@/lib/constants";
+import { Mail, Youtube, Instagram, Twitter, Sparkles } from "lucide-react";
+import { LOGO_URL, NAV_LINKS, INVESTOR_EMAIL } from "@/lib/constants";
 
 export default function Footer() {
   return (
     <footer
-      className="relative bg-[hsl(var(--kotz-ink))] text-white"
+      className="relative bg-[hsl(var(--kotz-ink))] text-foreground border-t border-border"
       data-testid="site-footer"
     >
-      <div className="absolute inset-0 bg-grain pointer-events-none" />
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="md:col-span-2">
-            <Link to="/" className="flex items-center gap-2">
-              <img src={LOGO_URL} alt="Kotzinons logo" className="h-10 w-10 object-contain" />
-              <span className="font-display text-2xl tracking-wider">KOTZINONS</span>
+      <div className="absolute inset-0 bg-grain pointer-events-none opacity-50" />
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+          <div className="md:col-span-5">
+            <Link to="/" className="flex items-center gap-3">
+              <img src={LOGO_URL} alt="The Kotzinons" className="h-12 w-12 object-contain" />
+              <span className="font-display text-2xl tracking-wider text-foreground">THE KOTZINONS</span>
             </Link>
-            <p className="mt-4 text-sm text-white/70 max-w-md">
-              The official home of the Kotzinons — a colorful, courageous team of armored heroes
-              created by Uri Eini. From hand-drawn sketches to handcrafted toys to full animation.
+            <p className="mt-5 text-sm text-foreground/65 max-w-md leading-relaxed">
+              A new universe of armored heroes — born from a single drawing, built into a toy line,
+              and now in full motion. Created and copyrighted by Uri Menashe Eini.
             </p>
-            <p className="mt-4 text-xs text-white/50 font-mono">
-              © Uri Menashe Eini. All artwork, characters and the name “Kotzinons” are protected by copyright.
-            </p>
+            <div className="mt-5 flex items-center gap-2 text-xs font-mono uppercase tracking-[0.2em] text-[hsl(var(--kotz-gold))]">
+              <Sparkles className="h-3.5 w-3.5" /> Licensing & investment inquiries welcome
+            </div>
+            <a
+              href={`mailto:${INVESTOR_EMAIL}`}
+              className="mt-2 inline-flex items-center gap-2 text-sm text-foreground/80 hover:text-[hsl(var(--kotz-gold))] transition-colors"
+              data-testid="footer-investor-email"
+            >
+              <Mail className="h-4 w-4" /> {INVESTOR_EMAIL}
+            </a>
           </div>
-          <div>
-            <h4 className="font-display tracking-wider text-lg mb-3">Explore</h4>
-            <ul className="space-y-2 text-sm">
+          <div className="md:col-span-4">
+            <h4 className="font-display tracking-wider text-base mb-4 text-foreground/80">EXPLORE</h4>
+            <ul className="grid grid-cols-2 gap-y-2 text-sm">
               {NAV_LINKS.map((l) => (
                 <li key={l.to}>
                   <Link
                     to={l.to}
-                    className="text-white/70 hover:text-white transition-colors duration-150"
+                    className="text-foreground/65 hover:text-[hsl(var(--kotz-gold))] transition-colors duration-150"
                     data-testid={`footer-${l.testid}`}
                   >
                     {l.label}
@@ -40,35 +47,31 @@ export default function Footer() {
               ))}
             </ul>
           </div>
-          <div>
-            <h4 className="font-display tracking-wider text-lg mb-3">Connect</h4>
+          <div className="md:col-span-3">
+            <h4 className="font-display tracking-wider text-base mb-4 text-foreground/80">CONNECT</h4>
             <ul className="space-y-3 text-sm">
               <li>
                 <a
                   href="https://www.youtube.com/shorts/diZbJpeyo6o"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-150"
+                  className="inline-flex items-center gap-2 text-foreground/70 hover:text-[hsl(var(--kotz-gold))] transition-colors duration-150"
                   data-testid="footer-youtube"
                 >
                   <Youtube className="h-4 w-4" /> YouTube
                 </a>
               </li>
-              <li>
-                <span className="inline-flex items-center gap-2 text-white/60" data-testid="footer-instagram">
-                  <Instagram className="h-4 w-4" /> Coming soon
-                </span>
+              <li className="inline-flex items-center gap-2 text-foreground/40">
+                <Instagram className="h-4 w-4" /> Coming soon
               </li>
-              <li>
-                <span className="inline-flex items-center gap-2 text-white/60" data-testid="footer-twitter">
-                  <Twitter className="h-4 w-4" /> Coming soon
-                </span>
+              <li className="inline-flex items-center gap-2 text-foreground/40">
+                <Twitter className="h-4 w-4" /> Coming soon
               </li>
               <li>
                 <Link
                   to="/contact"
-                  className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors duration-150"
-                  data-testid="footer-email"
+                  className="inline-flex items-center gap-2 text-foreground/70 hover:text-[hsl(var(--kotz-gold))] transition-colors duration-150"
+                  data-testid="footer-contact"
                 >
                   <Mail className="h-4 w-4" /> Send a message
                 </Link>
@@ -76,9 +79,9 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <p className="text-xs text-white/50 font-mono">
-            Made with care for kids, fans, and the future of indie animation.
+        <div className="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <p className="text-xs text-foreground/45 font-mono">
+            © {new Date().getFullYear()} Uri Menashe Eini. All artwork, characters and the name “The Kotzinons” are protected by copyright.
           </p>
           <div className="flex items-center gap-2">
             <span className="inline-block w-3 h-3 rounded-full bg-[hsl(var(--kotz-red))]" />

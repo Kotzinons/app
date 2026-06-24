@@ -1,40 +1,49 @@
 import { cn } from "@/lib/utils";
 
-export default function OrbitBackground({ className }) {
+export default function OrbitBackground({ className, intensity = "medium" }) {
+  const op = intensity === "high" ? 0.28 : intensity === "low" ? 0.12 : 0.2;
   return (
     <div
       aria-hidden="true"
-      className={cn(
-        "pointer-events-none absolute inset-0 overflow-hidden",
-        className
-      )}
+      className={cn("pointer-events-none absolute inset-0 overflow-hidden", className)}
       data-testid="orbit-background"
     >
-      {/* Soft radial color washes */}
-      <div className="absolute -top-32 -left-20 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle_at_center,hsla(43,96%,56%,0.18),transparent_60%)]" />
-      <div className="absolute top-1/3 -right-20 h-[460px] w-[460px] rounded-full bg-[radial-gradient(circle_at_center,hsla(210,95%,50%,0.16),transparent_60%)]" />
-      <div className="absolute bottom-0 left-1/4 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle_at_center,hsla(152,62%,40%,0.14),transparent_60%)]" />
-
-      {/* Orbit rings */}
-      <svg
-        viewBox="0 0 1200 800"
-        className="absolute inset-0 w-full h-full opacity-[0.18]"
-        preserveAspectRatio="xMidYMid slice"
-      >
+      {/* Star field dots */}
+      <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid slice">
         <defs>
-          <linearGradient id="orbit-stroke" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="hsl(222 47% 11%)" stopOpacity="0.0" />
-            <stop offset="50%" stopColor="hsl(222 47% 11%)" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="hsl(222 47% 11%)" stopOpacity="0.0" />
-          </linearGradient>
+          <radialGradient id="star-grad" cx="50%" cy="50%">
+            <stop offset="0%" stopColor="#FFE08A" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#FFE08A" stopOpacity="0" />
+          </radialGradient>
         </defs>
-        <ellipse cx="600" cy="420" rx="560" ry="180" fill="none" stroke="url(#orbit-stroke)" strokeWidth="1.2" />
-        <ellipse cx="600" cy="420" rx="420" ry="140" fill="none" stroke="url(#orbit-stroke)" strokeWidth="1" />
-        <ellipse cx="600" cy="420" rx="300" ry="100" fill="none" stroke="url(#orbit-stroke)" strokeWidth="0.8" />
+        {Array.from({ length: 60 }).map((_, i) => {
+          const x = ((i * 173) % 1200) + ((i * 13) % 30);
+          const y = ((i * 113) % 800) + ((i * 7) % 25);
+          const r = (i % 3) + 0.6;
+          return <circle key={i} cx={x} cy={y} r={r} fill="url(#star-grad)" opacity={0.6} />;
+        })}
       </svg>
 
-      {/* Halftone overlay */}
-      <div className="absolute inset-0 text-foreground bg-halftone" />
+      {/* Color washes */}
+      <div className="absolute -top-40 -left-32 h-[640px] w-[640px] rounded-full" style={{ background: `radial-gradient(circle, hsla(43, 92%, 56%, ${op}), transparent 60%)` }} />
+      <div className="absolute top-1/3 -right-32 h-[560px] w-[560px] rounded-full" style={{ background: `radial-gradient(circle, hsla(213, 92%, 56%, ${op * 0.9}), transparent 60%)` }} />
+      <div className="absolute bottom-0 left-1/4 h-[520px] w-[520px] rounded-full" style={{ background: `radial-gradient(circle, hsla(358, 80%, 55%, ${op * 0.7}), transparent 60%)` }} />
+
+      {/* Orbit rings */}
+      <svg viewBox="0 0 1200 800" className="absolute inset-0 w-full h-full opacity-[0.22]" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <linearGradient id="orbit-stroke" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#FFE08A" stopOpacity="0" />
+            <stop offset="50%" stopColor="#FFE08A" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#FFE08A" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <ellipse cx="600" cy="420" rx="580" ry="190" fill="none" stroke="url(#orbit-stroke)" strokeWidth="1" />
+        <ellipse cx="600" cy="420" rx="440" ry="150" fill="none" stroke="url(#orbit-stroke)" strokeWidth="0.8" />
+        <ellipse cx="600" cy="420" rx="320" ry="110" fill="none" stroke="url(#orbit-stroke)" strokeWidth="0.6" />
+      </svg>
+
+      <div className="absolute inset-0 bg-noise mix-blend-overlay" />
     </div>
   );
 }

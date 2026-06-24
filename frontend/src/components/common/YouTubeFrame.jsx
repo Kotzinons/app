@@ -6,11 +6,23 @@ export default function YouTubeFrame({ youtubeId, title = "YouTube video", isSho
   return (
     <div
       className={cn(
-        "relative rounded-2xl border bg-black/90 overflow-hidden shadow-[0_30px_90px_-60px_rgba(0,0,0,0.9)]",
+        "relative rounded-2xl border border-border bg-black overflow-hidden shadow-[0_40px_120px_-50px_rgba(0,0,0,0.9)]",
         className
       )}
       data-testid="youtube-frame"
     >
+      {/* Gold film strip */}
+      <div className="flex items-center justify-between px-3 py-2 border-b border-border bg-[hsl(var(--kotz-ink-2))]">
+        <div className="flex items-center gap-1.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-[hsl(var(--kotz-red))]/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[hsl(var(--kotz-gold))]/80" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[hsl(var(--kotz-green))]/80" />
+        </div>
+        <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-foreground/50 truncate max-w-[60%]">
+          {title}
+        </span>
+        <span className="text-[10px] font-mono text-foreground/50">LIVE</span>
+      </div>
       <AspectRatio ratio={isShort ? 9 / 16 : 16 / 9}>
         <iframe
           src={src}
@@ -21,8 +33,6 @@ export default function YouTubeFrame({ youtubeId, title = "YouTube video", isSho
           className="w-full h-full"
         />
       </AspectRatio>
-      {/* Glass highlight */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-white/10 to-transparent" />
     </div>
   );
 }

@@ -146,7 +146,7 @@ SEED_CHARACTERS = [
         "description": "The undisputed leader of the Kotzinons, Goldon wears the legendary Crystal Cell armor \u2014 a chest-mounted energy core ringed with golden launchers. With unmatched courage and a mind for battle, he guides the team across galaxies, defending the innocent from cosmic threats.",
         "weapon": "Crystal Cell Chest Cannon",
         "abilities": ["Tactical Command", "Energy Burst", "Cosmic Sight", "Unbreakable Will"],
-        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/br97rzjk_59ff9367-eafd-464e-900d-72425777dc7c.jpg",
+        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/tmex48wh_23c51e9b-2f7b-4cd7-870e-89569b63ab2c.jpg",
         "is_leader": True,
         "order": 1,
     },
@@ -202,11 +202,16 @@ SEED_CHARACTERS = [
         "description": "Ruby is the heart of the team \u2014 the only female Kotzinon and the swiftest of them all. Her ruby-tipped spear and crowned helm mark her royal lineage. She is as brilliant in strategy as she is unstoppable in motion.",
         "weapon": "Ruby-Tipped Spear",
         "abilities": ["Royal Command", "Blade Dance", "Healing Touch", "Crown Pulse"],
-        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/csyvb5r6_4de1e792-e6f0-4b8b-8c7a-6caa53f9e385.jpg",
+        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/t0mvwdio_WhatsApp%20Image%202026-06-24%20at%2015.58.59%20%281%29.jpeg",
         "is_leader": False,
         "order": 5,
     },
 ]
+
+# Featured cinematic image (Goldon + Viridian in spaceship)
+SPACESHIP_HERO_URL = "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/e5uk8vdi_WhatsApp%20Image%202026-06-24%20at%2015.58.59.jpeg"
+# Group of three (Viridian + Ruby + Goldon)
+GROUP_TRIO_URL = "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/5lu5oxb2_WhatsApp%20Image%202026-06-24%20at%2015.59.00.jpeg"
 
 SEED_TEAM = [
     {
@@ -253,53 +258,67 @@ SEED_TEAM = [
 
 SEED_GALLERY = [
     {
-        "title": "The Kotzinons \u2014 Original Group Poster",
-        "category": "posters",
-        "description": "The original hand-painted Kotzinons lineup poster by Uri Menashe Eini.",
-        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/csyvb5r6_4de1e792-e6f0-4b8b-8c7a-6caa53f9e385.jpg",
+        "title": "The Kotzinons \u2014 Aboard the Command Vessel",
+        "category": "digital-renders",
+        "description": "Goldon and Viridian on the bridge of the Kotzinons command ship, scanning a distant city skyline.",
+        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/e5uk8vdi_WhatsApp%20Image%202026-06-24%20at%2015.58.59.jpeg",
         "order": 1,
+    },
+    {
+        "title": "The Royal Lineup \u2014 Viridian, Ruby, Goldon",
+        "category": "digital-renders",
+        "description": "Three heroes stand together \u2014 Forest Guardian, Ruby Blade, and the Supreme Commander.",
+        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/5lu5oxb2_WhatsApp%20Image%202026-06-24%20at%2015.59.00.jpeg",
+        "order": 2,
+    },
+    {
+        "title": "Ruby \u2014 Royal Lineage on the Cliffs",
+        "category": "digital-renders",
+        "description": "Ruby Blade, the only female Kotzinon, surveys her world from a high cliff.",
+        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/t0mvwdio_WhatsApp%20Image%202026-06-24%20at%2015.58.59%20%281%29.jpeg",
+        "order": 3,
     },
     {
         "title": "Goldon \u2014 Supreme Commander Render",
         "category": "digital-renders",
         "description": "3D render of Goldon, leader of the Kotzinons, in his iconic Crystal Cell armor.",
-        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/br97rzjk_59ff9367-eafd-464e-900d-72425777dc7c.jpg",
-        "order": 2,
+        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/tmex48wh_23c51e9b-2f7b-4cd7-870e-89569b63ab2c.jpg",
+        "order": 4,
     },
     {
         "title": "Crimson \u2014 The Crimson Vanguard",
         "category": "digital-renders",
         "description": "Crimson with his twin spike clubs of Crimson Steel.",
         "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/q0bt34vi_3e65384a-5c4e-4f6a-be0e-429d44cdf8b9.jpg",
-        "order": 3,
+        "order": 5,
     },
     {
         "title": "Azure \u2014 Storm Sentinel",
         "category": "digital-renders",
         "description": "Azure with his twin Lightning Rod clubs, ready for the storm.",
         "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/bwy6av0k_9fd1951a-b584-4935-ab62-2971b347a8ef.jpg",
-        "order": 4,
+        "order": 6,
     },
     {
         "title": "Viridian \u2014 The Forest Guardian",
         "category": "digital-renders",
         "description": "Viridian with the Looping Vine ring weapon arching behind him.",
         "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/a7cidtry_f654a2ab-24bf-4231-b155-bfe5a435a9fb.jpg",
-        "order": 5,
+        "order": 7,
     },
     {
-        "title": "The Original Prototype \u2014 Handcrafted by Uri",
-        "category": "toy-photos",
-        "description": "The very first hand-built Kotzinon prototype \u2014 where it all began.",
-        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/tmex48wh_23c51e9b-2f7b-4cd7-870e-89569b63ab2c.jpg",
-        "order": 6,
-    },
-    {
-        "title": "Concept Art \u2014 The Goldon Pose Study",
+        "title": "Concept \u2014 The Goldon Pose Study",
         "category": "concept-art",
         "description": "Pose study of Goldon, leader of the Kotzinons, with the Crystal Cell chest emblem.",
-        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/br97rzjk_59ff9367-eafd-464e-900d-72425777dc7c.jpg",
-        "order": 7,
+        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/tmex48wh_23c51e9b-2f7b-4cd7-870e-89569b63ab2c.jpg",
+        "order": 8,
+    },
+    {
+        "title": "Concept \u2014 Ruby in Motion",
+        "category": "concept-art",
+        "description": "Ruby Blade study \u2014 royal lineage, grace, and the cliffs of her homeworld.",
+        "image_url": "https://customer-assets.emergentagent.com/job_kotzinons-studio/artifacts/t0mvwdio_WhatsApp%20Image%202026-06-24%20at%2015.58.59%20%281%29.jpeg",
+        "order": 9,
     },
 ]
 

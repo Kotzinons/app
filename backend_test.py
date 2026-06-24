@@ -53,7 +53,7 @@ class KotzinonsAPITester:
             return False, {}
 
     def test_get_characters(self):
-        """Test GET /api/characters - should return 5 characters"""
+        """Test GET /api/characters - should return 5 characters and Goldon's image_url contains 'tmex48wh' (NOT 'br97rzjk')"""
         def validate(data):
             if not isinstance(data, list):
                 print(f"Expected list, got {type(data)}")
@@ -68,11 +68,27 @@ class KotzinonsAPITester:
                     if field not in char:
                         print(f"Missing field '{field}' in character")
                         return False
+            
+            # PHASE 3 CRITICAL: Check Goldon's image_url
+            goldon = next((c for c in data if c.get('slug') == 'goldon'), None)
+            if not goldon:
+                print("❌ CRITICAL: Goldon character not found!")
+                return False
+            
+            if 'tmex48wh' not in goldon.get('image_url', ''):
+                print(f"❌ CRITICAL: Goldon's image_url does NOT contain 'tmex48wh'. Got: {goldon.get('image_url')}")
+                return False
+            
+            if 'br97rzjk' in goldon.get('image_url', ''):
+                print(f"❌ CRITICAL: Goldon's image_url contains OLD PROTOTYPE 'br97rzjk'. This MUST be removed! Got: {goldon.get('image_url')}")
+                return False
+            
             print(f"✓ Found {len(data)} characters with all required fields")
+            print(f"✓ PHASE 3 CHECK PASSED: Goldon's image_url contains 'tmex48wh' (new render)")
             return True
         
         return self.run_test(
-            "GET /api/characters",
+            "GET /api/characters (Phase 3: Goldon image check)",
             "GET",
             "characters",
             200,
@@ -140,19 +156,37 @@ class KotzinonsAPITester:
         )
 
     def test_get_gallery(self):
-        """Test GET /api/gallery - should return 7 gallery items"""
+        """Test GET /api/gallery - should return 9 gallery items and NONE contain 'csyvb5r6' or 'br97rzjk'"""
         def validate(data):
             if not isinstance(data, list):
                 print(f"Expected list, got {type(data)}")
                 return False
-            if len(data) != 7:
-                print(f"Expected 7 gallery items, got {len(data)}")
+            if len(data) != 9:
+                print(f"❌ Expected 9 gallery items (Phase 3), got {len(data)}")
                 return False
+            
+            # PHASE 3 CRITICAL: Check that NO gallery items contain old URLs
+            print("\n  🔍 Checking all gallery image URLs for Phase 3 compliance...")
+            for i, item in enumerate(data, 1):
+                image_url = item.get('image_url', '')
+                print(f"  [{i}] {item.get('title', 'Untitled')}: {image_url}")
+                
+                if 'csyvb5r6' in image_url:
+                    print(f"  ❌ CRITICAL: Gallery item contains OLD WALL POSTER 'csyvb5r6'. This MUST be removed!")
+                    print(f"     Item: {item.get('title')}")
+                    return False
+                
+                if 'br97rzjk' in image_url:
+                    print(f"  ❌ CRITICAL: Gallery item contains OLD PROTOTYPE 'br97rzjk'. This MUST be removed!")
+                    print(f"     Item: {item.get('title')}")
+                    return False
+            
             print(f"✓ Found {len(data)} gallery items")
+            print(f"✓ PHASE 3 CHECK PASSED: NO old URLs (csyvb5r6 or br97rzjk) found in gallery")
             return True
         
         return self.run_test(
-            "GET /api/gallery",
+            "GET /api/gallery (Phase 3: 9 items, no old URLs)",
             "GET",
             "gallery",
             200,
@@ -210,8 +244,38 @@ class KotzinonsAPITester:
             validation_fn=validate
         )
 
+    def test_get_stats(self):
+        """Test GET /api/stats - should return counts (Phase 3: gallery=9)"""
+        def validate(data):
+            if not isinstance(data, dict):
+                print(f"Expected dict, got {type(data)}")
+                return False
+            expected = {
+                'characters': 5,
+                'team': 4,
+                'gallery': 9,  # Phase 3: updated to 9
+                'videos': 1
+            }
+            for key, expected_value in expected.items():
+                if key not in data:
+                    print(f"Missing key '{key}' in stats")
+                    return False
+                if data[key] != expected_value:
+                    print(f"❌ Expected {key}={expected_value}, got {data[key]}")
+                    return False
+            print(f"✓ Stats correct: {data}")
+            return True
+        
+        return self.run_test(
+            "GET /api/stats (Phase 3: gallery=9)",
+            "GET",
+            "stats",
+            200,
+            validation_fn=validate
+        )
+
     def test_post_contact(self):
-        """Test POST /api/contact"""
+        """Test POST /api/contact with general inquiry"""
         test_data = {
             "name": "Test User",
             "email": f"test_{datetime.now().strftime('%H%M%S')}@example.com",
@@ -234,7 +298,65 @@ class KotzinonsAPITester:
             return True
         
         return self.run_test(
-            "POST /api/contact",
+            "POST /api/contact (general)",
+            "POST",
+            "contact",
+            200,
+            data=test_data,
+            validation_fn=validate
+        )
+    
+    def test_post_contact_investment(self):
+        """Test POST /api/contact with 'investment' inquiry type (Phase 3)"""
+        test_data = {
+            "name": "Investor Test",
+            "email": f"investor_{datetime.now().strftime('%H%M%S')}@example.com",
+            "inquiry_type": "investment",
+            "subject": "Investment Inquiry",
+            "message": "Testing investment inquiry type for Phase 3."
+        }
+        
+        def validate(data):
+            if not isinstance(data, dict):
+                print(f"Expected dict, got {type(data)}")
+                return False
+            if data.get('inquiry_type') != 'investment':
+                print(f"❌ Expected inquiry_type='investment', got {data.get('inquiry_type')}")
+                return False
+            print(f"✓ PHASE 3 CHECK PASSED: Contact accepts 'investment' inquiry type")
+            return True
+        
+        return self.run_test(
+            "POST /api/contact (investment inquiry - Phase 3)",
+            "POST",
+            "contact",
+            200,
+            data=test_data,
+            validation_fn=validate
+        )
+    
+    def test_post_contact_licensing(self):
+        """Test POST /api/contact with 'licensing' inquiry type (Phase 3)"""
+        test_data = {
+            "name": "Licensing Test",
+            "email": f"licensing_{datetime.now().strftime('%H%M%S')}@example.com",
+            "inquiry_type": "licensing",
+            "subject": "Licensing Inquiry",
+            "message": "Testing licensing inquiry type for Phase 3."
+        }
+        
+        def validate(data):
+            if not isinstance(data, dict):
+                print(f"Expected dict, got {type(data)}")
+                return False
+            if data.get('inquiry_type') != 'licensing':
+                print(f"❌ Expected inquiry_type='licensing', got {data.get('inquiry_type')}")
+                return False
+            print(f"✓ PHASE 3 CHECK PASSED: Contact accepts 'licensing' inquiry type")
+            return True
+        
+        return self.run_test(
+            "POST /api/contact (licensing inquiry - Phase 3)",
             "POST",
             "contact",
             200,
@@ -284,39 +406,9 @@ class KotzinonsAPITester:
         
         return success
 
-    def test_get_stats(self):
-        """Test GET /api/stats - should return counts"""
-        def validate(data):
-            if not isinstance(data, dict):
-                print(f"Expected dict, got {type(data)}")
-                return False
-            expected = {
-                'characters': 5,
-                'team': 4,
-                'gallery': 7,
-                'videos': 1
-            }
-            for key, expected_value in expected.items():
-                if key not in data:
-                    print(f"Missing key '{key}' in stats")
-                    return False
-                if data[key] != expected_value:
-                    print(f"Expected {key}={expected_value}, got {data[key]}")
-                    return False
-            print(f"✓ Stats correct: {data}")
-            return True
-        
-        return self.run_test(
-            "GET /api/stats",
-            "GET",
-            "stats",
-            200,
-            validation_fn=validate
-        )
-
 def main():
     print("=" * 60)
-    print("🚀 Kotzinons Studio API Test Suite")
+    print("🚀 Kotzinons Studio API Test Suite - Phase 3")
     print("=" * 60)
     
     tester = KotzinonsAPITester()
@@ -329,9 +421,11 @@ def main():
     tester.test_get_gallery()
     tester.test_get_gallery_filtered()
     tester.test_get_videos()
-    tester.test_post_contact()
-    tester.test_post_newsletter()
     tester.test_get_stats()
+    tester.test_post_contact()
+    tester.test_post_contact_investment()
+    tester.test_post_contact_licensing()
+    tester.test_post_newsletter()
     
     # Print summary
     print("\n" + "=" * 60)

@@ -43,16 +43,13 @@ export default function NewsletterForm({ className, variant = "default" }) {
         onChange={(e) => setEmail(e.target.value)}
         disabled={loading}
         data-testid="newsletter-email-input"
-        className={cn(
-          "h-12 rounded-xl",
-          variant === "dark" && "bg-white/10 border-white/20 text-white placeholder:text-white/60 focus-visible:ring-white"
-        )}
+        className="h-12 rounded-xl bg-[hsl(var(--kotz-ink))] border-border text-foreground placeholder:text-foreground/40"
       />
       <Button
         type="submit"
         disabled={loading}
         size="lg"
-        className="h-12 rounded-xl px-6 gap-2"
+        className="h-12 rounded-xl px-6 gap-2 bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold"
         data-testid="newsletter-submit-button"
       >
         <Send className="h-4 w-4" />

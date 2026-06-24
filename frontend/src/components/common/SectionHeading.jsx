@@ -22,23 +22,27 @@ export default function SectionHeading({
       {eyebrow && (
         <p
           className={cn(
-            "text-[11px] font-mono uppercase tracking-[0.25em] text-muted-foreground mb-3",
+            "text-[10px] font-mono uppercase tracking-[0.3em] mb-3 flex items-center gap-2",
+            align === "center" ? "justify-center" : "",
+            "text-[hsl(var(--kotz-gold))]",
             eyebrowClassName
           )}
         >
+          <span className="inline-block h-px w-8 bg-[hsl(var(--kotz-gold))]/50" />
           {eyebrow}
+          <span className="inline-block h-px w-8 bg-[hsl(var(--kotz-gold))]/50" />
         </p>
       )}
       <h2
         className={cn(
-          "font-display text-4xl sm:text-5xl tracking-wider text-foreground leading-[0.95]",
+          "font-display text-4xl sm:text-5xl lg:text-6xl tracking-wider text-foreground leading-[0.95]",
           titleClassName
         )}
       >
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-base sm:text-lg text-muted-foreground text-balance">
+        <p className="mt-4 text-base sm:text-lg text-foreground/65 text-balance leading-relaxed">
           {subtitle}
         </p>
       )}

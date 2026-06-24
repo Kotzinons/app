@@ -1,26 +1,34 @@
 [
   {
-    "content": "Phase 2: Get design guidelines from design_agent",
+    "content": "Phase 3: Update logo URL + brand constants to new Kotzinons logo",
     "status": "completed"
   },
   {
-    "content": "Phase 2: Setup backend - models, seed data, API endpoints",
+    "content": "Phase 3: Redesign UI to cinematic/animation studio (dark premium theme)",
     "status": "completed"
   },
   {
-    "content": "Phase 2: Build frontend - all pages (Home, Characters, Gallery, Animations, About, Team, Contact)",
+    "content": "Phase 3: Update Ruby with new solo render; add spaceship hero image",
     "status": "completed"
   },
   {
-    "content": "Phase 2: Verify backend and frontend services running",
+    "content": "Phase 3: Remove wall poster + prototype from gallery, add new renders",
     "status": "completed"
   },
   {
-    "content": "Phase 2: All user stories covered in development",
+    "content": "Phase 3: Add Storybook 'Coming Soon' section with character collage cover",
     "status": "completed"
   },
   {
-    "content": "Phase 2: End to End Testing using testing_agent_v3",
+    "content": "Phase 3: Add Investors/Licensing section with uriemi@kotzinons.com email",
     "status": "completed"
+  },
+  {
+    "content": "Phase 3: Re-seed database + verify visual changes via screenshots",
+    "status": "completed"
+  },
+  {
+    "content": "Phase 3: End-to-end testing with testing_agent_v3",
+    "status": "in_progress"
   }
 ]

@@ -17,26 +17,26 @@ export default function GalleryPage() {
 
   return (
     <div data-testid="gallery-page">
-      <section className="relative overflow-hidden bg-background">
+      <section className="relative overflow-hidden bg-[hsl(var(--kotz-ink))]">
         <OrbitBackground />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-10">
           <SectionHeading
             eyebrow="Gallery"
             title="INSIDE THE KOTZINONS WORLD."
-            subtitle="From original concept art and the very first handcrafted prototype toy to brand-new digital renders."
+            subtitle="Cinematic 3D renders and concept art from the Kotzinons universe."
           />
         </div>
       </section>
 
-      <section className="pb-20">
+      <section className="pb-24 bg-[hsl(var(--kotz-ink))]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs value={category} onValueChange={setCategory} className="w-full" data-testid="gallery-category-tabs">
-            <TabsList className="flex flex-wrap h-auto bg-secondary/60 p-1 mb-8 w-full justify-start">
+            <TabsList className="flex flex-wrap h-auto bg-[hsl(var(--kotz-ink-2))] border border-border p-1 mb-10 w-full justify-start">
               {GALLERY_CATEGORIES.map((c) => (
                 <TabsTrigger
                   key={c.value}
                   value={c.value}
-                  className="rounded-md"
+                  className="rounded-md data-[state=active]:bg-[hsl(var(--kotz-gold))] data-[state=active]:text-[hsl(var(--kotz-ink))] data-[state=active]:font-bold"
                   data-testid={`gallery-tab-${c.value}`}
                 >
                   {c.label}
@@ -50,7 +50,7 @@ export default function GalleryPage() {
                   {Array.from({ length: 6 }).map((_, i) => (
                     <Skeleton
                       key={i}
-                      className="mb-5 inline-block w-full rounded-2xl"
+                      className="mb-5 inline-block w-full rounded-2xl bg-[hsl(var(--kotz-ink-2))]"
                       style={{ height: `${180 + (i % 3) * 80}px` }}
                     />
                   ))}
