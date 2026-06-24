@@ -6,12 +6,15 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import { NAV_LINKS, LOGO_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
+// useState setters are guaranteed stable by React, but we include them in deps
+// arrays where ESLint expects them to satisfy the exhaustive-deps rule cleanly.
+
 function useScrollState(threshold = 12) {
   const [scrolled, setScrolled] = useState(false);
 
   const onScroll = useCallback(() => {
     setScrolled(window.scrollY > threshold);
-  }, [threshold]);
+  }, [threshold, setScrolled]);
 
   useEffect(() => {
     onScroll();
@@ -86,7 +89,11 @@ function MobileNav({ open, setOpen }) {
               {l.label}
             </NavLink>
           ))}
-          <Button asChild className="mt-4 rounded-full bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold" data-testid="nav-cta-invest-mobile">
+          <Button
+            asChild
+            className="mt-4 rounded-full bg-[hsl(var(--kotz-gold))] text-[hsl(var(--kotz-ink))] hover:bg-[hsl(var(--kotz-gold))]/90 font-bold"
+            data-testid="nav-cta-invest-mobile"
+          >
             <Link to="/invest">Licensing & Invest</Link>
           </Button>
         </nav>
@@ -95,15 +102,17 @@ function MobileNav({ open, setOpen }) {
   );
 }
 
+function useCloseMenuOnRouteChange(setOpen) {
+  const location = useLocation();
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname, setOpen]);
+}
+
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const scrolled = useScrollState(12);
-  const location = useLocation();
-
-  // Close mobile menu when route changes
-  useEffect(() => {
-    setOpen(false);
-  }, [location.pathname]);
+  useCloseMenuOnRouteChange(setOpen);
 
   return (
     <header
@@ -140,7 +149,6 @@ export default function Navbar() {
           <MobileNav open={open} setOpen={setOpen} />
         </div>
       </div>
-      {/* Subtle comet stripe at bottom of header */}
       <div className="h-px w-full comet-stripe opacity-50" />
     </header>
   );

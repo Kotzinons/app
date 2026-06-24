@@ -49,7 +49,7 @@ export default function CharactersPage() {
 
   const filtered = useMemo(() => {
     if (filter === "all") return characters;
-    return characters.filter((char) => char.color === filter);
+    return characters.filter((character) => character.color === filter);
   }, [characters, filter]);
 
   return (

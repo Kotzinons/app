@@ -123,8 +123,8 @@ class StatusCheck(BaseModel):
 
 
 # ============== HELPERS ==============
-def serialize_doc(doc: dict) -> dict:
-    """Convert MongoDB doc to JSON-safe dict"""
+def serialize_doc(doc: Optional[dict]) -> Optional[dict]:
+    """Convert MongoDB doc to JSON-safe dict (removes ``_id``, ISO-formats datetimes)."""
     if doc is None:
         return doc
     doc.pop('_id', None)
@@ -334,12 +334,12 @@ SEED_VIDEOS = [
 ]
 
 
-async def seed_database():
-    """Seed the database with initial data (idempotent)"""
+async def seed_database() -> None:
+    """Seed the database with initial data (idempotent)."""
     try:
         # Characters
         if await db.characters.count_documents({}) == 0:
-            docs = []
+            docs: list[dict] = []
             for c in SEED_CHARACTERS:
                 obj = Character(**c)
                 docs.append(obj.model_dump())
@@ -378,12 +378,12 @@ async def seed_database():
 
 # ============== ROUTES ==============
 @api_router.get("/")
-async def root():
+async def root() -> dict[str, str]:
     return {"message": "Kotzinons Studio API", "version": "1.0.0"}
 
 
 @api_router.get("/stats")
-async def get_stats():
+async def get_stats() -> dict[str, int]:
     characters_count = await db.characters.count_documents({})
     team_count = await db.team.count_documents({})
     gallery_count = await db.gallery.count_documents({})
@@ -397,13 +397,13 @@ async def get_stats():
 
 
 @api_router.get("/characters", response_model=List[Character])
-async def list_characters():
+async def list_characters() -> List[Character]:
     docs = await db.characters.find({}, {"_id": 0}).sort("order", 1).to_list(100)
     return [Character(**d) for d in docs]
 
 
 @api_router.get("/characters/{slug}", response_model=Character)
-async def get_character(slug: str):
+async def get_character(slug: str) -> Character:
     doc = await db.characters.find_one({"slug": slug}, {"_id": 0})
     if not doc:
         raise HTTPException(status_code=404, detail="Character not found")
@@ -411,14 +411,14 @@ async def get_character(slug: str):
 
 
 @api_router.get("/team", response_model=List[TeamMember])
-async def list_team():
+async def list_team() -> List[TeamMember]:
     docs = await db.team.find({}, {"_id": 0}).sort("order", 1).to_list(100)
     return [TeamMember(**d) for d in docs]
 
 
 @api_router.get("/gallery", response_model=List[GalleryItem])
-async def list_gallery(category: Optional[str] = None):
-    query = {}
+async def list_gallery(category: Optional[str] = None) -> List[GalleryItem]:
+    query: dict = {}
     if category and category != "all":
         query["category"] = category
     docs = await db.gallery.find(query, {"_id": 0}).sort("order", 1).to_list(500)
@@ -426,13 +426,13 @@ async def list_gallery(category: Optional[str] = None):
 
 
 @api_router.get("/videos", response_model=List[Video])
-async def list_videos():
+async def list_videos() -> List[Video]:
     docs = await db.videos.find({}, {"_id": 0}).sort("order", 1).to_list(100)
     return [Video(**d) for d in docs]
 
 
 @api_router.post("/contact", response_model=ContactMessage)
-async def create_contact(input: ContactMessageCreate):
+async def create_contact(input: ContactMessageCreate) -> ContactMessage:
     obj = ContactMessage(**input.model_dump())
     doc = obj.model_dump()
     doc["created_at"] = doc["created_at"].isoformat()
@@ -442,13 +442,13 @@ async def create_contact(input: ContactMessageCreate):
 
 
 @api_router.get("/contact", response_model=List[ContactMessage])
-async def list_contact_messages():
+async def list_contact_messages() -> List[ContactMessage]:
     docs = await db.contact_messages.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
     return [ContactMessage(**d) for d in docs]
 
 
 @api_router.post("/newsletter", response_model=NewsletterSubscriber)
-async def newsletter_signup(input: NewsletterCreate):
+async def newsletter_signup(input: NewsletterCreate) -> NewsletterSubscriber:
     existing = await db.newsletter.find_one({"email": input.email})
     if existing:
         existing.pop("_id", None)
@@ -464,13 +464,13 @@ async def newsletter_signup(input: NewsletterCreate):
 
 
 @api_router.get("/newsletter", response_model=List[NewsletterSubscriber])
-async def list_newsletter():
+async def list_newsletter() -> List[NewsletterSubscriber]:
     docs = await db.newsletter.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
     return [NewsletterSubscriber(**d) for d in docs]
 
 
 @api_router.post("/status", response_model=StatusCheck)
-async def create_status_check(input: StatusCheckCreate):
+async def create_status_check(input: StatusCheckCreate) -> StatusCheck:
     status_obj = StatusCheck(**input.model_dump())
     doc = status_obj.model_dump()
     doc['timestamp'] = doc['timestamp'].isoformat()
@@ -479,7 +479,7 @@ async def create_status_check(input: StatusCheckCreate):
 
 
 @api_router.get("/status", response_model=List[StatusCheck])
-async def get_status_checks():
+async def get_status_checks() -> List[StatusCheck]:
     status_checks = await db.status_checks.find({}, {"_id": 0}).to_list(1000)
     for check in status_checks:
         if isinstance(check.get('timestamp'), str):
@@ -500,11 +500,11 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-async def startup_event():
+async def startup_event() -> None:
     await seed_database()
     logger.info("Kotzinons API ready")
 
 
 @app.on_event("shutdown")
-async def shutdown_db_client():
+async def shutdown_db_client() -> None:
     client.close()

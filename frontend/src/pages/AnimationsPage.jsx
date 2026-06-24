@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Film, Sparkles, ArrowRight, Mail } from "lucide-react";
 import { fetchVideos, fetchTeam } from "@/lib/api";
+import { logger } from "@/lib/logger";
 import YouTubeFrame from "@/components/common/YouTubeFrame";
 import SectionHeading from "@/components/common/SectionHeading";
 import OrbitBackground from "@/components/common/OrbitBackground";
@@ -121,10 +122,10 @@ export default function AnimationsPage() {
       setShareCopied(true);
       setTimeout(() => setShareCopied(false), 2000);
     } catch (error) {
-      // Clipboard API may be unavailable (non-HTTPS, old browsers) — surface to console.
-      console.error("Failed to copy YouTube share link:", error);
+      // Clipboard API may be unavailable (non-HTTPS, old browsers).
+      logger.error("Failed to copy YouTube share link:", error);
     }
-  }, []);
+  }, [setShareCopied]);
 
   return (
     <div data-testid="animations-page">
